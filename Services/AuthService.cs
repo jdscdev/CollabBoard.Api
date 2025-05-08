@@ -20,9 +20,9 @@ namespace CollabBoard.Api.Services
             if (existingUser != null)
                 return null;
 
-            var passwordHash = HashPassword(dto.Password);
+            var passwordHash = HashPassword(dto.Password, out var salt);
 
-            var user = new User { Username = dto.Username, PasswordHash = passwordHash };
+            var user = new User { Username = dto.Username, PasswordHash = passwordHash, PasswordSalt = salt };
             await _userRepo.CreateUserAsync(user);
 
             return new UserDto
@@ -36,7 +36,7 @@ namespace CollabBoard.Api.Services
         public async Task<UserDto?> Login(UserLoginDto dto)
         {
             var user = await _userRepo.GetByUsernameAsync(dto.Username);
-            if (user == null || !VerifyPassword(dto.Password, user.PasswordHash))
+            if (user == null || !VerifyPassword(dto.Password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
             return new UserDto
@@ -47,16 +47,18 @@ namespace CollabBoard.Api.Services
             };
         }
 
-        private static string HashPassword(string password)
+        private static string HashPassword(string password, out byte[] salt)
         {
-            using var hmac = new HMACSHA256();
-            return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(password)));
+            salt = RandomNumberGenerator.GetBytes(16);
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256);
+            return Convert.ToBase64String(pbkdf2.GetBytes(32));
         }
 
-        private static bool VerifyPassword(string password, string storedHash)
+        private static bool VerifyPassword(string password, string storedHash, byte[] storedSalt)
         {
-            var hashed = HashPassword(password);
-            return storedHash == hashed;
+            var pbkdf2 = new Rfc2898DeriveBytes(password, storedSalt, 100000, HashAlgorithmName.SHA256);
+            var computedHash = Convert.ToBase64String(pbkdf2.GetBytes(32));
+            return storedHash == computedHash;
         }
 
         private string GenerateToken(User user)
