@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollabBoard.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250508005922_InitialCreate")]
+    [Migration("20250508034803_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -39,7 +39,7 @@ namespace CollabBoard.Api.Migrations
                     b.ToTable("Boards");
                 });
 
-            modelBuilder.Entity("CollabBoard.Api.Models.Comment", b =>
+            modelBuilder.Entity("CollabBoard.Api.Models.Card", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,17 +49,17 @@ namespace CollabBoard.Api.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TaskItemId")
+                    b.Property<int>("ListId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskItemId");
+                    b.HasIndex("ListId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Cards");
                 });
 
-            modelBuilder.Entity("CollabBoard.Api.Models.TaskItem", b =>
+            modelBuilder.Entity("CollabBoard.Api.Models.List", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,10 +67,6 @@ namespace CollabBoard.Api.Migrations
 
                     b.Property<int>("BoardId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -80,7 +76,7 @@ namespace CollabBoard.Api.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Lists");
                 });
 
             modelBuilder.Entity("CollabBoard.Api.Models.User", b =>
@@ -92,6 +88,10 @@ namespace CollabBoard.Api.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -113,21 +113,21 @@ namespace CollabBoard.Api.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("CollabBoard.Api.Models.Comment", b =>
+            modelBuilder.Entity("CollabBoard.Api.Models.Card", b =>
                 {
-                    b.HasOne("CollabBoard.Api.Models.TaskItem", "TaskItem")
-                        .WithMany("Comments")
-                        .HasForeignKey("TaskItemId")
+                    b.HasOne("CollabBoard.Api.Models.List", "List")
+                        .WithMany("Cards")
+                        .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TaskItem");
+                    b.Navigation("List");
                 });
 
-            modelBuilder.Entity("CollabBoard.Api.Models.TaskItem", b =>
+            modelBuilder.Entity("CollabBoard.Api.Models.List", b =>
                 {
                     b.HasOne("CollabBoard.Api.Models.Board", "Board")
-                        .WithMany("Tasks")
+                        .WithMany("Lists")
                         .HasForeignKey("BoardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -137,12 +137,12 @@ namespace CollabBoard.Api.Migrations
 
             modelBuilder.Entity("CollabBoard.Api.Models.Board", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("Lists");
                 });
 
-            modelBuilder.Entity("CollabBoard.Api.Models.TaskItem", b =>
+            modelBuilder.Entity("CollabBoard.Api.Models.List", b =>
                 {
-                    b.Navigation("Comments");
+                    b.Navigation("Cards");
                 });
 
             modelBuilder.Entity("CollabBoard.Api.Models.User", b =>

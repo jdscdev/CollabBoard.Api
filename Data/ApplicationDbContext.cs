@@ -7,7 +7,7 @@ namespace CollabBoard.Api.Data
     {
         public DbSet<User> Users => Set<User>();
         public DbSet<Board> Boards => Set<Board>();
-        public DbSet<TaskItem> Tasks => Set<TaskItem>();
-        public DbSet<Comment> Comments => Set<Comment>();
+        public DbSet<Card> Cards => Set<Card>();
+        public DbSet<List> Lists => Set<List>();
     }
 }

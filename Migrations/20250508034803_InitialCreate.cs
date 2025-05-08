@@ -17,7 +17,8 @@ namespace CollabBoard.Api.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Username = table.Column<string>(type: "TEXT", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false)
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,20 +46,19 @@ namespace CollabBoard.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "Lists",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
                     BoardId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_Lists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_Boards_BoardId",
+                        name: "FK_Lists_Boards_BoardId",
                         column: x => x.BoardId,
                         principalTable: "Boards",
                         principalColumn: "Id",
@@ -66,21 +66,21 @@ namespace CollabBoard.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "Cards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
-                    TaskItemId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ListId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_Cards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Tasks_TaskItemId",
-                        column: x => x.TaskItemId,
-                        principalTable: "Tasks",
+                        name: "FK_Cards_Lists_ListId",
+                        column: x => x.ListId,
+                        principalTable: "Lists",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -91,13 +91,13 @@ namespace CollabBoard.Api.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_TaskItemId",
-                table: "Comments",
-                column: "TaskItemId");
+                name: "IX_Cards_ListId",
+                table: "Cards",
+                column: "ListId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_BoardId",
-                table: "Tasks",
+                name: "IX_Lists_BoardId",
+                table: "Lists",
                 column: "BoardId");
         }
 
@@ -105,10 +105,10 @@ namespace CollabBoard.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "Cards");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "Lists");
 
             migrationBuilder.DropTable(
                 name: "Boards");
