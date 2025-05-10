@@ -4,10 +4,8 @@ namespace CollabBoard.Api.Repositories
 {
     public interface ICardRepository
     {
-        Task<IEnumerable<Card>> GetAllAsync();
-        Task<Card?> GetByIdAsync(int id);
-        Task AddAsync(Card card);
-        Task UpdateAsync(Card card);
-        Task DeleteAsync(Card card);
+        Task<IEnumerable<Card>> GetByListIdAsync(int listId);
+        Task<Card> CreateAsync(Card card);
+        Task DeleteAsync(int id);
     }
 }

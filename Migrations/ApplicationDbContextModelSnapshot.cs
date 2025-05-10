@@ -26,12 +26,12 @@ namespace CollabBoard.Api.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("OwnerId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Boards");
                 });
@@ -101,13 +101,9 @@ namespace CollabBoard.Api.Migrations
 
             modelBuilder.Entity("CollabBoard.Api.Models.Board", b =>
                 {
-                    b.HasOne("CollabBoard.Api.Models.User", "Owner")
+                    b.HasOne("CollabBoard.Api.Models.User", null)
                         .WithMany("Boards")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CollabBoard.Api.Models.Card", b =>

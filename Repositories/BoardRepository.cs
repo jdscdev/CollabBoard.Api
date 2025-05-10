@@ -8,29 +8,23 @@ namespace CollabBoard.Api.Repositories
     {
         private readonly ApplicationDbContext _context = dbContext;
         
-        public async Task<IEnumerable<Board>> GetAllAsync()
-        {
-            return await _context.Boards.ToListAsync();
-        }
-
+        public async Task<IEnumerable<Board>> GetAllAsync() => await _context.Boards.Include(b => b.Lists).ToListAsync();
         public async Task<Board?> GetByIdAsync(int id)
         {
-            return await _context.Boards.FirstOrDefaultAsync(b => b.Id == id);
+            var board = await _context.Boards.Include(b => b.Lists).FirstOrDefaultAsync(b => b.Id == id) ??
+                throw new InvalidOperationException($"Board with ID {id} not found.");
+            return board;
         }
-
-        public async Task AddAsync(Board board)
+        public async Task<Board> CreateAsync(Board board)
         {
             _context.Boards.Add(board);
             await _context.SaveChangesAsync();
+            return board;
         }
-        public async Task UpdateAsync(Board board)
+        public async Task DeleteAsync(int id)
         {
-            _context.Boards.Update(board);
-            await _context.SaveChangesAsync();
-        }
-        public async Task DeleteAsync(Board board)
-        {
-            _context.Boards.Remove(board);
+            var b = await _context.Boards.FindAsync(id);
+            if (b != null) _context.Boards.Remove(b);
             await _context.SaveChangesAsync();
         }
     }

@@ -6,8 +6,7 @@ namespace CollabBoard.Api.Repositories
     {
         Task<IEnumerable<Board>> GetAllAsync();
         Task<Board?> GetByIdAsync(int id);
-        Task AddAsync(Board board);
-        Task UpdateAsync(Board board);
-        Task DeleteAsync(Board board);
+        Task<Board> CreateAsync(Board board);
+        Task DeleteAsync(int id);
     }
 }

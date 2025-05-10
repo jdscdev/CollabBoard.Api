@@ -8,29 +8,20 @@ namespace CollabBoard.Api.Repositories
     {
         private readonly ApplicationDbContext _context = dbContext;
 
-        public async Task<IEnumerable<Card>> GetAllAsync()
-        {
-            return await _context.Cards.ToListAsync();
-        }
+        public async Task<IEnumerable<Card>> GetByListIdAsync(int listId) =>
+        await _context.Cards.Where(c => c.ListId == listId).ToListAsync();
 
-        public async Task<Card?> GetByIdAsync(int id)
-        {
-            return await _context.Cards.FirstOrDefaultAsync(b => b.Id == id);
-        }
-
-        public async Task AddAsync(Card card)
+        public async Task<Card> CreateAsync(Card card)
         {
             _context.Cards.Add(card);
             await _context.SaveChangesAsync();
+            return card;
         }
-        public async Task UpdateAsync(Card card)
+
+        public async Task DeleteAsync(int id)
         {
-            _context.Cards.Update(card);
-            await _context.SaveChangesAsync();
-        }
-        public async Task DeleteAsync(Card card)
-        {
-            _context.Cards.Remove(card);
+            var c = await _context.Cards.FindAsync(id);
+            if (c != null) _context.Cards.Remove(c);
             await _context.SaveChangesAsync();
         }
     }
