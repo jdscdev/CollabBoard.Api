@@ -1,3 +1,4 @@
+using CollabBoard.Api.DTOs;
 using CollabBoard.Api.Models;
 
 namespace CollabBoard.Api.Services
@@ -6,7 +7,7 @@ namespace CollabBoard.Api.Services
     {
         Task<IEnumerable<Board>> GetBoardsAsync();
         Task<Board?> GetBoardAsync(int id);
-        Task<Board> CreateBoardAsync(string name);
+        Task<Board> CreateBoardAsync(BoardRequestDto boardRequestDto);
         Task DeleteBoardAsync(int id);
     }
 }

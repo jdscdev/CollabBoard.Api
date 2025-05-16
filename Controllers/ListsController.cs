@@ -1,3 +1,4 @@
+using CollabBoard.Api.DTOs;
 using CollabBoard.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace CollabBoard.Api.Controllers
         public async Task<IActionResult> Get(int boardId) => Ok(await _service.GetListsByBoardAsync(boardId));
         
         [HttpPost]
-        public async Task<IActionResult> Create(int boardId, [FromBody] string title) => Ok(await _service.CreateListAsync(boardId, title));
+        public async Task<IActionResult> Create([FromBody] ListRequestDto listRequestDto) => Ok(await _service.CreateListAsync(listRequestDto));
         
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id) { await _service.DeleteListAsync(id); return NoContent(); }

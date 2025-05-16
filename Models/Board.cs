@@ -1,3 +1,5 @@
+using CollabBoard.Api.DTOs;
+
 namespace CollabBoard.Api.Models
 {
     public class Board

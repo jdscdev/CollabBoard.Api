@@ -1,6 +1,7 @@
+using CollabBoard.Api.DTOs;
+
 namespace CollabBoard.Api.Models
 {
-   // TaskItem.cs
     public class Card
     {
         public int Id { get; set; }
