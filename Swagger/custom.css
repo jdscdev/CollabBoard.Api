@@ -1,0 +1,25 @@
+body {
+    background-color: rgb(71, 71, 71);
+    color: beige;
+}
+
+.swagger-ui .info .title,
+.swagger-ui .model-title,
+.swagger-ui .models-control,
+.swagger-ui a.nostyle,
+.swagger-ui a.nostyle:visited,
+.swagger-ui .tab li button.tablinks,
+.swagger-ui .opblock-description-wrapper p,
+.swagger-ui .response-col_description,
+.swagger-ui .response-col_status,
+.swagger-ui .response-col_links,
+.swagger-ui .model,
+.swagger-ui .prop-type,
+.swagger-ui .prop-format,
+.swagger-ui .model .property.primitive {
+    color: white;
+}
+
+.swagger-ui .model-toggle {
+    background-color: white;
+}
