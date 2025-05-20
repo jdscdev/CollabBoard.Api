@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(71, 71, 71);
+    background-color: black;
     color: beige;
 }
 
@@ -17,9 +17,9 @@ body {
 .swagger-ui .prop-type,
 .swagger-ui .prop-format,
 .swagger-ui .model .property.primitive {
-    color: white;
+    color: beige;
 }
 
 .swagger-ui .model-toggle {
-    background-color: white;
+    background-color: beige;
 }
