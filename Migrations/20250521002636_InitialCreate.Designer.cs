@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollabBoard.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250510004535_InitialCreate")]
+    [Migration("20250521002636_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

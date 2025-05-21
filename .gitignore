@@ -54,6 +54,6 @@ TestResult.xml
 nunit-*.xml
 
 appSettings.Development.json
-collab.db-shm
-collab.db-wal
-collab.db
+collabboard.api.db-shm
+collabboard.api.db-wal
+collabboard.api.db
