@@ -3,6 +3,7 @@ body {
     color: beige;
 }
 
+.swagger-ui .btn,
 .swagger-ui .info .title,
 .swagger-ui .model-title,
 .swagger-ui .models-control,
@@ -16,10 +17,18 @@ body {
 .swagger-ui .model,
 .swagger-ui .prop-type,
 .swagger-ui .prop-format,
-.swagger-ui .model .property.primitive {
+.swagger-ui .model .property.primitive,
+.swagger-ui .opblock .opblock-section-header h4 {
     color: beige;
 }
 
 .swagger-ui .model-toggle {
     background-color: beige;
+}
+
+.swagger-ui textarea,
+.swagger-ui .opblock .opblock-section-header,
+.swagger-ui .scheme-container {
+    background: rgb(56, 56, 56);
+    color: beige;
 }

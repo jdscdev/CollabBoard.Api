@@ -52,10 +52,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseSqlite(dbConnString);
 });
 
-// Auth
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+// Services
 builder.Services.AddScoped<IAuthService, AuthService>();
-// App
+builder.Services.AddScoped<IBoardService, BoardService>();
+// Repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<ICardRepository, CardRepository>();
 builder.Services.AddScoped<IListRepository, ListRepository>();
@@ -63,10 +64,18 @@ builder.Services.AddScoped<IListRepository, ListRepository>();
 // JWT Auth
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
+// CORS
+var corsPolicy = "AllowFrontend";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy(name: corsPolicy,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000") // Frontend origin
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
 });
 
 builder.Services.AddAuthorization();
@@ -89,7 +98,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseCors("AllowAll");
+app.UseCors(corsPolicy);
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -74,7 +74,8 @@ namespace CollabBoard.Api.Services
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(7),
+                expires: DateTime.UtcNow.AddHours(1),
+                issuer: _config["Jwt:Issuer"],
                 signingCredentials: creds
             );
 

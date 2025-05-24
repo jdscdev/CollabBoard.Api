@@ -11,6 +11,8 @@ public static class JwtConfiguration
 
         if (string.IsNullOrWhiteSpace(secretKey))
             throw new Exception("Missing JWT Secret Key.");
+        if (string.IsNullOrWhiteSpace(issuer))
+            throw new Exception("Missing issuer.");
 
         services.AddAuthentication(options =>
         {
